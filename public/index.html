@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hidden Message Gift Demo ❤️</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffe6f0, #fff0f6);
+      text-align: center;
+      padding: 10px;
+      margin: 0;
+    }
+    h1 {
+      color: #e60073;
+      margin: 15px 0 25px;
+      text-shadow: 1px 1px 3px #fff;
+      font-size: clamp(20px, 6vw, 32px);
+    }
+    .gallery {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .card {
+      position: relative;
+      width: 90vw;
+      max-width: 320px;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+    .card:active { transform: scale(0.97); }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.5s;
+    }
+    .card.clicked img {
+      opacity: 0;
+    }
+
+    .message {
+      position: absolute;
+      inset: 0;
+      background: rgba(230,0,115,0.9);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(16px, 4vw, 20px);
+      padding: 15px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.5s;
+      z-index: 2;
+    }
+    .card.clicked .message {
+      opacity: 1;
+    }
+
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 18px;
+      color: #e60073;
+      animation: floatUp 4s linear forwards;
+      pointer-events: none;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Just for You 💖</h1>
+  <div class="gallery">
+    <div class="card" onclick="reveal(this, '/11.mp3', false)">
+      <img src="/1.jpg" alt="Pic 1">
+      <div class="message">You make my world brighter ✨</div>
+    </div>
+    <div class="card" onclick="reveal(this, '/11.mp3', true)">
+      <img src="/2.jpg" alt="Pic 2">
+      <div class="message">Your smile is my favorite view 😊</div>
+    </div>
+    <div class="card" onclick="reveal(this, '/11.mp3', true)">
+      <img src="/3.jpg" alt="Pic 3">
+      <div class="message">Every day with you feels special ❤️</div>
+    </div>
+    <div class="card" onclick="reveal(this, '/22.mp3', false)">
+      <img src="/4.jpg" alt="Pic 4">
+      <div class="message">You are my happiest thought 🌸</div>
+    </div>
+  </div>
+
+  <audio id="bg-music"></audio>
+
+  <script>
+    const music = document.getElementById('bg-music');
+
+    function reveal(card, track, shouldLoop) {
+      card.classList.toggle('clicked');
+
+      if (!music.src.includes(track)) {
+        music.src = track;
+      }
+
+      music.loop = shouldLoop;
+
+      if (music.paused) {
+        music.play();
+      }
+
+      // More hearts per click
+      for (let i = 0; i < 8; i++) {
+        setTimeout(createHeart, i * 200);
+      }
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+
+      // random emoji variation
+      const emojis = ["❤️", "💖", "💕", "💓", "💗"];
+      heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.fontSize = (16 + Math.random() * 24) + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 4000);
+    }
+  </script>
+</body>
+</html>
